@@ -1,4 +1,4 @@
 module.exports = {
-  singleQuote: true,
+  singleQuote: true, // シングルクォートに統一
   trailingComma: 'all',
 };
