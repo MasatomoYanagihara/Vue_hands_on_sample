@@ -5,6 +5,7 @@ import CalendarComponent from '@/views/Calendar.vue';
 import ProfileComponent from '@/views/Profile.vue';
 import ShareComponent from '@/views/Share.vue';
 import SignInComponent from '@/views/SignIn.vue';
+import NotFoundComponent from '@/views/NotFound.vue';
 
 Vue.use(VueRouter);
 
@@ -22,21 +23,41 @@ const routes = [
     name: 'calendar',
     component: CalendarComponent,
     props: true,
+    meta: {
+      title: 'calendar',
+    },
   },
   {
     path: '/profile',
     name: 'profile',
     component: ProfileComponent,
+    meta: {
+      title: 'profile',
+    },
   },
   {
     path: '/share',
     name: 'share',
     component: ShareComponent,
+    meta: {
+      title: 'share',
+    },
   },
   {
     path: '/sign-in',
     name: 'sign-in',
     component: SignInComponent,
+    meta: {
+      title: 'sign-in',
+    },
+  },
+  // NotFoundのルート定義は一番最後で行う
+  {
+    path: '*',
+    component: NotFoundComponent,
+    meta: {
+      title: 'Not Found',
+    },
   },
 ];
 
