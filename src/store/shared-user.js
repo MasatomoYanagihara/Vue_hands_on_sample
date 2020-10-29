@@ -1,3 +1,6 @@
+import '@/plugins/composition-api';
+import { reactive } from '@vue/composition-api';
+
 export const sharedUserMockData = [
   {
     userId: '66006b29-727e-4ed8-a3c8-95d4438f66d4',
@@ -32,3 +35,25 @@ export const sharedUserMockData = [
     display: true,
   },
 ];
+
+export const sharedUserStore = reactive({ sharedUsers: sharedUserMockData });
+
+/**
+ * 特定ユーザーのプロフィールを更新します。
+ * @param profile 更新対象ユーザーのプロフィール
+ */
+export const update = profile => {
+  const filteredUser = sharedUserStore.sharedUsers.filter(
+    user => user.userId === profile.userId,
+  );
+
+  if (!filteredUser || filteredUser.length === 0) {
+    return;
+  }
+
+  const tagetUser = filteredUser[0];
+  tagetUser.userName = profile.userName;
+  tagetUser.nickname = profile.nickname;
+  tagetUser.themeColor = profile.themeColor;
+  tagetUser.hasAvatar = profile.hasAvatar;
+};
