@@ -13,8 +13,11 @@
   "dependencies": {
     "@vue/composition-api": "1.0.0-beta.8",
     "core-js": "3.6.4",
+    "material-design-icons-iconfont": "5.0.1",
+    "roboto-fontface": "0.10.0",
     "vue": "2.6.11",
     "vue-router": "3.1.5",
+    "vuetify": "2.2.15",
     "vuex": "3.1.2"
   },
   "devDependencies": {
@@ -40,7 +43,9 @@
     "stylelint-order": "4.0.0",
     "stylelint-scss": "3.14.2",
     "stylelint-webpack-plugin": "1.2.3",
-    "vue-template-compiler": "2.6.11"
+    "vue-cli-plugin-vuetify": "~2.0.5",
+    "vue-template-compiler": "2.6.11",
+    "vuetify-loader": "1.4.3"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"

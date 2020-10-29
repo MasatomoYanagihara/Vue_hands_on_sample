@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>カレンダー[{{ type.hoge }}]</h1>
+    <h1>カレンダー[{{ type }}]</h1>
   </div>
 </template>
 
