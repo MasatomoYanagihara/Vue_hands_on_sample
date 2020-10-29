@@ -50,8 +50,13 @@
   </v-footer>
 </template>
 <script>
-import { defineComponent, reactive, toRefs } from '@vue/composition-api';
-import { profileMockData } from '@/store/profile';
+import {
+  defineComponent,
+  reactive,
+  toRefs,
+  computed,
+} from '@vue/composition-api';
+import { profileStore } from '@/store/profile';
 
 export default defineComponent({
   setup(prop, context) {
@@ -70,7 +75,9 @@ export default defineComponent({
         },
       ],
       // サインインしているユーザー
-      signInUser: profileMockData,
+      signInUser: computed(() => {
+        return profileStore.profile;
+      }),
     });
     /**
      * メソッド名を指定してコンポーネントのメソッドを呼び出します。
@@ -106,6 +113,7 @@ export default defineComponent({
      * サインアウトします。
      */
     const signOut = () => {
+      profileStore.profile = null;
       routerPush('/sign-in');
     };
 
