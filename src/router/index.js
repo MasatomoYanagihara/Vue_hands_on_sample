@@ -13,6 +13,9 @@ const routes = [
     path: '/',
     name: 'home',
     component: HomeComponent,
+    meta: {
+      title: 'home',
+    },
   },
   {
     path: '/calendar/:type',
@@ -41,6 +44,17 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+});
+
+// afterEachナビゲーションガード
+router.afterEach(to => {
+  // meta.titleがなけらばreturn
+  if (!to.meta.title) {
+    return;
+  }
+
+  // meta.titleがあればtitleに表示
+  document.title = to.meta.title;
 });
 
 export default router;

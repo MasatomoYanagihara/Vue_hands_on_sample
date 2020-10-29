@@ -17,8 +17,9 @@ export default defineComponent({
     // push( path, 遷移成功時に呼び出されるコールバック関数（省略可）, 遷移中断時に呼び出されるコールバック関数（省略可） )
     const calendar = () => {
       context.root.$router.push(
-        'calendar/month',
-        // nameで指定 { name: 'carendar', params: { type: 'month } }
+        // 'calendar/month',
+        // nameで指定 { name: 'calendar', params: { type: 'month' } }
+        { name: 'calendar', params: { type: { hoge: 123, fuga: 'xyz' } } },
         () => {},
         () => {},
       );
