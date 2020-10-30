@@ -1,6 +1,8 @@
 <template>
   <v-footer v-if="signInUser" app class="pa-0">
     <v-bottom-navigation grow dark>
+      <span class="display-1"><slot name="foo"/></span>
+      <span class="pl-4 display-1"><slot name="bar"/></span>
       <v-btn class="my-auto" height="56" @click="routerPush('/')">
         <span>home</span>
         <v-icon large>home</v-icon>
