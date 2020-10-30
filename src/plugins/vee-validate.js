@@ -14,7 +14,10 @@ const config = {
   // すべてのバリデーションルールを検証
   bails: false,
   // input, blurのタイミングでバリデーションを実行。
-  mode: 'aggressive',
+  // mode: 'aggressive',
+  // change, blurのタイミングでバリデーションを実行。
+  // 入力値が有効な値に復帰した場合は即時にエラーを消す。
+  mode: 'eager',
 };
 configure(config);
 
