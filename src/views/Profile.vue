@@ -45,22 +45,44 @@
         open-on-hover
       >
         <v-card>
-          <v-card-text>
-            <v-container>
-              <v-row>
-                <v-text-field v-model="newUserName" label="ユーザー名*" />
-              </v-row>
-            </v-container>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer />
-            <v-btn color="blue darken-1" text @click="closeEditUserNameDialog">
-              キャンセル
-            </v-btn>
-            <v-btn color="blue darken-1" text @click="saveUserName">
-              保存する
-            </v-btn>
-          </v-card-actions>
+          <ValidationObserver v-slot="{ invalid }">
+            <ValidationProvider
+              v-slot="{ errors }"
+              name="ユーザー名"
+              :rules="validationRules.userName"
+            >
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <v-text-field
+                      v-model="newUserName"
+                      label="ユーザー名*"
+                      :error-count="Number.MAX_VALUE"
+                      :error-messages="errors"
+                    />
+                  </v-row>
+                </v-container>
+              </v-card-text>
+            </ValidationProvider>
+            <v-card-actions>
+              <v-spacer />
+              <v-btn
+                color="blue darken-1"
+                text
+                @click="closeEditUserNameDialog"
+              >
+                キャンセル
+              </v-btn>
+              <v-btn
+                color="blue darken-1"
+                text
+                :disabled="invalid"
+                @click="saveUserName"
+              >
+                保存する
+              </v-btn>
+            </v-card-actions>
+          </ValidationObserver>
         </v-card>
       </v-dialog>
       <v-text-field
@@ -81,7 +103,7 @@
             <ValidationProvider
               v-slot="{ errors }"
               name="ニックネーム"
-              rules="required|max:15"
+              rules="validationRules.nickname"
             >
               <v-card-text>
                 <v-container>
@@ -128,7 +150,12 @@
 </template>
 
 <script>
-import { defineComponent, reactive, toRefs } from '@vue/composition-api';
+import {
+  defineComponent,
+  reactive,
+  toRefs,
+  computed,
+} from '@vue/composition-api';
 import {
   profileStore,
   updateThemeColor,
@@ -151,6 +178,20 @@ export default defineComponent({
       isOpenEditUserNameDialog: false,
       // ニックネーム編集ダイアログをオープンするかどうかを示す値です。
       isOpenEditNicknameDialog: false,
+      // バリデーションルールです。
+      validationRules: computed(() => {
+        return {
+          nickname: {
+            required: true,
+            max: 15,
+          },
+          userName: {
+            required: true,
+            userNameAllowedCharacters: true,
+            max: 15,
+          },
+        };
+      }),
     });
     /**
      * アバターを保存します。

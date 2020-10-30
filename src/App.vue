@@ -5,10 +5,7 @@
         <Router-view />
       </v-container>
     </v-content>
-    <Footer>
-      <template #foo>foo</template>
-      <template #bar>bar</template>
-    </Footer>
+    <Footer />
   </v-app>
 </template>
 
