@@ -285,6 +285,7 @@ import {
   computed,
   nextTick,
   toRefs,
+  onUpdated,
 } from '@vue/composition-api';
 import {
   parseDate,
@@ -389,6 +390,18 @@ export default defineComponent({
       disabledEndTime: computed(() => {
         return !state.endDate || !state.startTime;
       }),
+    });
+
+    /**
+     * `onUpdated`ライフサイクルフックです。
+     */
+    onUpdated(() => {
+      if (props.type === 'month') {
+        return;
+      }
+      nextTick(() => {
+        state.calendar.scrollToTime('07:00');
+      });
     });
 
     const methods = {
