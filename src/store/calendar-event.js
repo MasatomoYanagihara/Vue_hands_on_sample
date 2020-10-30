@@ -1,3 +1,7 @@
+import '@/plugins/composition-api';
+import { reactive } from '@vue/composition-api';
+import { profileStore } from '@/store/profile';
+
 export const calendarEventMockData = [
   {
     id: 'a8b2c7c8-ebe4-4c70-a1d0-dbc42ba777d5',
@@ -111,3 +115,44 @@ export const todayCalendarEventMockData = [
     shared: true,
   },
 ];
+
+export const calendarEventStore = reactive({
+  calendarEvents: calendarEventMockData,
+});
+
+/**
+ * UUIDを生成します。
+ */
+const generateUuidMock = () => {
+  return 'a8b2c7c8-ebe4-4c70-a1d0-xxxxxxxxxxxx'.replace(/x/g, () =>
+    Math.floor(Math.random() * 16).toString(16),
+  );
+};
+
+/**
+ * カレンダーイベントを追加します。
+ * @param newCalendarEvent 追加するカレンダーイベント
+ */
+export const add = newCalendarEvent => {
+  newCalendarEvent.id = generateUuidMock();
+  newCalendarEvent.userId = profileStore.profile.userId;
+  calendarEventStore.calendarEvents.push(newCalendarEvent);
+};
+
+/**
+ * カレンダーイベントを更新します。
+ * @param newCalendarEvent 更新するカレンダーイベント
+ */
+export const update = newCalendarEvent => {
+  const index = calendarEventStore.calendarEvents.findIndex(
+    event => event.id === newCalendarEvent.id,
+  );
+
+  if (index === -1) {
+    // 更新対象が見つからなかった場合
+    return;
+  }
+
+  // https://jp.vuejs.org/v2/guide/list.html#配列の変化を検出
+  calendarEventStore.calendarEvents.splice(index, 1, newCalendarEvent);
+};
