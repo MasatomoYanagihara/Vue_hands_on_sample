@@ -67,3 +67,17 @@ export const searchUsers = partOfNickname => {
     user.nickname.startsWith(partOfNickname),
   );
 };
+
+/**
+ * 指定したユーザーのテーマカラーを取得します。
+ * @param userId テーマカラーを取得するユーザーのID
+ */
+export const getThemeColor = userId => {
+  const defaultColor = '#f44336';
+  const user = sharedUserStore.sharedUsers.find(user => user.userId === userId);
+  if (!user) {
+    return defaultColor;
+  }
+
+  return user.themeColor;
+};

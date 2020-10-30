@@ -1,48 +1,122 @@
 <template>
-  <div>
-    <h1>ホーム</h1>
-    <p><Router-link to="sign-in">サインイン</Router-link></p>
-    <p><button @click="calendar">カレンダー</button></p>
-    <p><button @click="profile">プロフィール</button></p>
-    <p><button @click="share">共有</button></p>
-  </div>
+  <v-row align="center" justify="center">
+    <v-col cols="12" md="6" class="text-center">
+      <v-row class="py-12" align="center" justify="center">
+        <span class="font-weight-thin title" v-text="`${today.year}/`" />
+        <span class="pl-2 display-1" v-text="`${today.month}/${today.day}`" />
+        <v-chip
+          class="ml-2 pt-0 title"
+          color="pink"
+          text-color="white"
+          v-text="displayWeekday"
+        />
+      </v-row>
+      <div v-for="(event, index) in filteredEvents" :key="index">
+        <v-chip
+          class="mt-2"
+          :color="getEventColor(event)"
+          text-color="white"
+          label
+          v-text="event.name"
+        />
+      </div>
+      <v-divider class="my-4" />
+      <v-timeline v-if="displayTimeline" class="mb-12">
+        <v-timeline-item
+          v-for="(event, index) in filteredEventsHasTime"
+          :key="index"
+          class="text-left"
+          right
+          :color="getEventColor(event)"
+        >
+          <template v-slot:opposite>
+            <span v-text="event.startTime" />
+          </template>
+          <span class="pl-4" v-text="event.name" />
+        </v-timeline-item>
+      </v-timeline>
+      <v-row align="center" justify="center">
+        <v-switch
+          v-for="(sharedUser, index) in sharedUsers"
+          :key="index"
+          v-model="sharedUser.display"
+          class="ml-4 pt-0"
+          :color="sharedUser.themeColor"
+          :label="sharedUser.nickname"
+          hide-details
+        />
+      </v-row>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
-import { defineComponent } from '@vue/composition-api';
+import {
+  defineComponent,
+  reactive,
+  computed,
+  toRefs,
+} from '@vue/composition-api';
+import { parseDate } from 'vuetify/lib/components/VCalendar/util/timestamp';
+import { todayCalendarEventMockData } from '@/store/calendar-event';
+import { sharedUserStore, getThemeColor } from '@/store/shared-user';
 
 export default defineComponent({
-  setup(prop, context) {
-    // context.root.$routerでVue Routerインスタンスにアクセス
-    // push( path, 遷移成功時に呼び出されるコールバック関数（省略可）, 遷移中断時に呼び出されるコールバック関数（省略可） )
-    const calendar = () => {
-      context.root.$router.push(
-        // 'calendar/month',
-        // nameで指定 { name: 'calendar', params: { type: 'month' } }
-        { name: 'calendar', params: { type: { hoge: 123, fuga: 'xyz' } } },
-        () => {},
-        () => {},
-      );
-    };
-    const profile = () => {
-      context.root.$router.push(
-        'profile',
-        () => {},
-        () => {},
-      );
-    };
-    const share = () => {
-      context.root.$router.push(
-        'share',
-        () => {},
-        () => {},
-      );
+  setup() {
+    const state = reactive({
+      // 本日の日付です。
+      today: parseDate(new Date()),
+      // カレンダーを共有しているユーザーです。
+      sharedUsers: sharedUserStore.sharedUsers,
+      // 本日の曜日です。
+      displayWeekday: computed(() => {
+        return ['日', '月', '火', '水', '木', '金', '土'][state.today.weekday];
+      }),
+      /**
+       * 時間指定のないイベントです。
+       * スイッチによってフィルタリングを行います。
+       */
+      filteredEvents: computed(() => {
+        const displayUserIds = state.sharedUsers
+          .filter(user => user.display)
+          .map(user => user.userId);
+
+        return todayCalendarEventMockData.filter(
+          event => displayUserIds.includes(event.userId) && !event.startTime,
+        );
+      }),
+      /**
+       * 時間指定のあるイベントです。
+       * スイッチによってフィルタリングを行います。
+       */
+      filteredEventsHasTime: computed(() => {
+        const displayUserIds = state.sharedUsers
+          .filter(user => user.display)
+          .map(user => user.userId);
+
+        return todayCalendarEventMockData.filter(
+          event => displayUserIds.includes(event.userId) && event.startTime,
+        );
+      }),
+      // タイムラインを表示するかどうかを示す値です。
+      displayTimeline: computed(() => {
+        return state.filteredEventsHasTime.length > 0;
+      }),
+    });
+    /**
+     * イベントの色を取得します。
+     */
+    const getEventColor = event => {
+      if (!event) {
+        return;
+      }
+
+      return getThemeColor(event.userId);
     };
 
     return {
-      calendar,
-      profile,
-      share,
+      ...toRefs(state),
+      getEventColor,
     };
   },
 });
