@@ -16,6 +16,8 @@
             placeholder="画像を選択してください"
             prepend-icon="photo_camera"
             label="アバター"
+            :error-count="Number.MAX_VALUE"
+            :error-messages="avatarErrors"
             @change="saveFileContent"
           />
         </v-col>
@@ -162,6 +164,7 @@ import {
   updateUserName,
   updateNickname,
 } from '@/store/profile';
+import { validate } from 'vee-validate';
 
 export default defineComponent({
   setup() {
@@ -178,6 +181,8 @@ export default defineComponent({
       isOpenEditUserNameDialog: false,
       // ニックネーム編集ダイアログをオープンするかどうかを示す値です。
       isOpenEditNicknameDialog: false,
+      // アバターのバリデーションエラーです。
+      avatarErrors: null,
       // バリデーションルールです。
       validationRules: computed(() => {
         return {
@@ -190,6 +195,10 @@ export default defineComponent({
             userNameAllowedCharacters: true,
             max: 15,
           },
+          avatar: {
+            ext: ['png', 'jpeg', 'bmp'],
+            size: 300, // 300KBまで
+          },
         };
       }),
     });
@@ -197,8 +206,26 @@ export default defineComponent({
      * アバターを保存します。
      * @param file アバターの画像ファイル
      */
-    // eslint-disable-next-line no-unused-vars
-    const saveFileContent = file => {};
+    const saveFileContent = file => {
+      state.avatarErrors = null;
+      if (!file) {
+        // ファイル選択ダイアログでキャンセルされた場合などで、
+        // ファイルが選択されていない場合は何もしない。
+        return;
+      }
+      // validate( ファイル, バリデーションルール, オプション（ここではエラーメッセージに表示する項目名nameを指定している）)
+      validate(file, state.validationRules.avatar, {
+        name: 'アバター',
+      }).then(result => {
+        // resultにバリデーションの結果が渡されvalidには成功か失敗かの値が入る。
+        // result.validがfalseなら失敗の為、エラーメッセージをプロパティに設定している。
+        if (!result.valid) {
+          state.avatarErrors = result.errors;
+          return;
+        }
+        // バリデーション成功。WebAPIを呼び出してアバター画像を保存する。
+      });
+    };
     /**
      * テーマカラーを保存します。
      */
