@@ -163,7 +163,7 @@ import {
 import {
   profileStore,
   updateThemeColor,
-  updateUserName,
+  updateUserNameAsync,
   updateNickname,
 } from '@/store/profile';
 import { validate } from 'vee-validate';
@@ -289,11 +289,16 @@ export default defineComponent({
     /**
      * ユーザー名を保存します。
      */
-    const saveUserName = () => {
-      if (state.newUserName) {
-        updateUserName(state.newUserName);
+    const saveUserName = async () => {
+      try {
+        if (state.newUserName) {
+          await updateUserNameAsync(state.newUserName);
+        }
+        state.isOpenEditUserNameDialog = false;
+      } catch (error) {
+        console.log(error.response);
+        console.log('error: ', error.response?.data?.title);
       }
-      state.isOpenEditUserNameDialog = false;
     };
     /**
      * ニックネームの編集を開始します。

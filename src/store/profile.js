@@ -10,9 +10,18 @@ export const profileStore = reactive({ profile: null });
  * ユーザー名を更新します。
  * @param userName ユーザー名
  */
-export const updateUserName = userName => {
-  profileStore.profile.userName = userName;
-  update(profileStore.profile);
+export const updateUserNameAsync = async userName => {
+  const profile = profileStore.profile;
+  const data = { userName: userName };
+
+  // eslint-disable-next-line no-useless-catch
+  try {
+    await axios.patch('profile', data);
+    profile.userName = userName;
+    update(profile);
+  } catch (error) {
+    throw error;
+  }
 };
 
 /**
