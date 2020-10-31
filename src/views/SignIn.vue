@@ -43,15 +43,14 @@
 </template>
 
 <script>
-import { defineComponent } from '@vue/composition-api';
-import { myExample } from '@/directives/my-example';
+import { defineComponent, reactive, toRefs } from '@vue/composition-api';
 
 export default defineComponent({
-  // ディレクティブをローカル登録
-  directives: {
-    myExample,
-  },
   setup(prop, context) {
+    const state = reactive({
+      foo: null,
+      bar: null,
+    });
     const exampleHandler = event => {
       console.log('event.target.value: ', event.target.value);
     };
@@ -69,6 +68,7 @@ export default defineComponent({
     };
 
     return {
+      ...toRefs(state),
       exampleHandler,
       signIn,
     };
