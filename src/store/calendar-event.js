@@ -1,6 +1,6 @@
 import '@/plugins/composition-api';
 import { reactive } from '@vue/composition-api';
-import { profileStore } from '@/store/profile';
+import store from '@/store/index';
 
 export const calendarEventMockData = [
   {
@@ -135,7 +135,7 @@ const generateUuidMock = () => {
  */
 export const add = newCalendarEvent => {
   newCalendarEvent.id = generateUuidMock();
-  newCalendarEvent.userId = profileStore.profile.userId;
+  newCalendarEvent.userId = store.getters['profile/profile'].userId;
   calendarEventStore.calendarEvents.push(newCalendarEvent);
 };
 

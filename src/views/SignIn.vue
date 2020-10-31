@@ -43,7 +43,6 @@
 
 <script>
 import { defineComponent } from '@vue/composition-api';
-import { signInAsync } from '@/store/profile';
 
 export default defineComponent({
   setup(prop, context) {
@@ -52,7 +51,7 @@ export default defineComponent({
      */
     const signIn = async () => {
       try {
-        await signInAsync();
+        await context.root.$store.dispatch('profile/signIn');
         context.root.$router.push('/');
       } catch (error) {
         // 通常はエラーメッセージを表示するなどの処理が必要

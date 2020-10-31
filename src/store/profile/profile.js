@@ -10,7 +10,7 @@ export const profileModule = {
     /**
      * プロフィールを取得します。
      */
-    profile(state) {
+    getProfile(state) {
       return state.profile;
     },
   },

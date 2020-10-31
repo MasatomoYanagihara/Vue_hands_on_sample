@@ -56,7 +56,7 @@ import {
   toRefs,
   computed,
 } from '@vue/composition-api';
-import { profileStore } from '@/store/profile';
+// import { profileStore } from '@/store/profile/profile';
 
 export default defineComponent({
   setup(prop, context) {
@@ -74,9 +74,14 @@ export default defineComponent({
           methodName: 'share',
         },
       ],
+      // プロフィール情報を取得します。
+      profileGetter: computed(
+        () => context.root.$store.getters['profile/profile'],
+      ),
       // サインインしているユーザー
       signInUser: computed(() => {
-        return profileStore.profile;
+        // return profileStore.getProfile;
+        return context.root.$store.getters['profile/getProfile'];
       }),
     });
     /**
@@ -113,7 +118,7 @@ export default defineComponent({
      * サインアウトします。
      */
     const signOut = () => {
-      profileStore.profile = null;
+      context.root.$store.commit('profile/clearProfile');
       routerPush('/sign-in');
     };
 
