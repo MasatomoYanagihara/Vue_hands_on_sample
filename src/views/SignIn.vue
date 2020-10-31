@@ -1,6 +1,7 @@
 <template>
   <v-row align="center" justify="center">
     <v-col cols="12" md="6" class="text-center">
+      <v-text-field v-my-example="exampleHandler" />
       <p class="display-1 py-12">
         サンプルアプリケーションにサインインする
       </p>
@@ -43,9 +44,17 @@
 
 <script>
 import { defineComponent } from '@vue/composition-api';
+import { myExample } from '@/directives/my-example';
 
 export default defineComponent({
+  // ディレクティブをローカル登録
+  directives: {
+    myExample,
+  },
   setup(prop, context) {
+    const exampleHandler = event => {
+      console.log('event.target.value: ', event.target.value);
+    };
     /**
      * サインインします。
      */
@@ -60,6 +69,7 @@ export default defineComponent({
     };
 
     return {
+      exampleHandler,
       signIn,
     };
   },
