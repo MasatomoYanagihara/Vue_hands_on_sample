@@ -2,15 +2,7 @@
 import '@/plugins/composition-api';
 import { reactive } from '@vue/composition-api';
 import { update } from '@/store/shared-user';
-
-export const profileMockData = {
-  userId: '66006b29-727e-4ed8-a3c8-95d4438f66d4',
-  userName: 'naminami',
-  nickname: '波平',
-  themeColor: '#4caf50',
-  hasAvatar: false,
-  mailAddress: 'namihei@example.com',
-};
+import axios from 'axios';
 
 export const profileStore = reactive({ profile: null });
 
@@ -39,4 +31,19 @@ export const updateNickname = nickname => {
 export const updateThemeColor = themeColor => {
   profileStore.profile.themeColor = themeColor;
   update(profileStore.profile);
+};
+
+/**
+ * サインインします。
+ */
+export const signInAsync = async () => {
+  // ここに外部認証に関連した実装が必要
+
+  // eslint-disable-next-line no-useless-catch
+  try {
+    const response = await axios.get('profile');
+    profileStore.profile = response.data;
+  } catch (error) {
+    throw error;
+  }
 };
