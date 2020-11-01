@@ -1,5 +1,6 @@
 function inserted(el, binding) {
   console.log('inserted');
+  console.log('binding: ', binding);
   el.addEventListener('input', binding.value);
 }
 

@@ -1,7 +1,9 @@
 <template>
   <v-row align="center" justify="center">
     <v-col cols="12" md="6" class="text-center">
-      <v-text-field v-my-example="exampleHandler" />
+      <My-example v-model="parentValue" @custom-event="customEventHandler" />
+      <!-- v-modelは以下のように書き換えることができる -->
+      <!-- <my-example :value="parentValue" @input="parentValue = $event" /> -->
       <p class="display-1 py-12">
         サンプルアプリケーションにサインインする
       </p>
@@ -48,12 +50,11 @@ import { defineComponent, reactive, toRefs } from '@vue/composition-api';
 export default defineComponent({
   setup(prop, context) {
     const state = reactive({
-      foo: null,
-      bar: null,
+      parentValue: {
+        foo: 'foo',
+        bar: 'bar',
+      },
     });
-    const exampleHandler = event => {
-      console.log('event.target.value: ', event.target.value);
-    };
     /**
      * サインインします。
      */
@@ -66,11 +67,14 @@ export default defineComponent({
         console.log('error: ', error);
       }
     };
+    const customEventHandler = value => {
+      console.log('value: ', value);
+    };
 
     return {
       ...toRefs(state),
-      exampleHandler,
       signIn,
+      customEventHandler,
     };
   },
 });

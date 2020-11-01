@@ -8,13 +8,18 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css';
 import '@/plugins/composition-api';
 import '@/plugins/vee-validate';
 import '@/plugins/axios';
-import * as directives from '@/directives';
+import * as directives from '@/directives/index.js';
+import * as components from '@/components/index.js';
 
 Vue.config.productionTip = false;
 
 // ディレクティブをグローバル登録
 for (const [key, directive] of Object.entries(directives)) {
   Vue.directive(key, directive);
+}
+// コンポーネントをグローバル登録
+for (const [key, component] of Object.entries(components)) {
+  Vue.component(key, component);
 }
 
 new Vue({
