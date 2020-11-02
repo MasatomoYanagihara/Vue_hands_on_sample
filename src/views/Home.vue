@@ -64,7 +64,7 @@ import { useSharedEvents } from '@/modules/use-shared-events';
 
 export default defineComponent({
   setup() {
-    const { sharedEventState, getDisplayUserIds } = useSharedEvents;
+    const { sharedEventState, getDisplayUserIds } = useSharedEvents();
     const state = reactive({
       // 本日の日付です。
       today: parseDate(new Date()),
