@@ -1,6 +1,16 @@
 import { update } from '@/store/shared-user';
 import axios from 'axios';
 
+/**
+ * sessionStorage にプロフィール情報を保存します。
+ */
+const setStorage = profile => {
+  /**
+   * sessionStorage.setItem()でsessionStorageにデータを格納できる。
+   * sessionStorage.setItem('キー名', 格納する値（文字列のみ）)
+   */
+  sessionStorage.setItem('profile', JSON.stringify(profile));
+};
 export const profileModule = {
   namespaced: true,
   state: {
@@ -10,8 +20,20 @@ export const profileModule = {
     /**
      * プロフィールを取得します。
      */
+    // getProfile(state) {
+    //   return state.profile;
+    // },
     getProfile(state) {
-      return state.profile;
+      if (state.profile) {
+        return state.profile;
+      }
+
+      const profile = sessionStorage.getItem('profile');
+      if (profile) {
+        return JSON.parse(profile);
+      }
+
+      return null;
     },
   },
   mutations: {
@@ -21,6 +43,7 @@ export const profileModule = {
      */
     updateUserName(state, userName) {
       state.profile.userName = userName;
+      setStorage(state.profile);
     },
     /**
      * 新しいニックネームを State に保存します。
@@ -28,6 +51,7 @@ export const profileModule = {
      */
     updateNickname(state, nickname) {
       state.profile.nickname = nickname;
+      setStorage(state.profile);
     },
     /**
      * 新しいテーマカラーを State に保存します。
@@ -35,6 +59,7 @@ export const profileModule = {
      */
     updateThemeColor(state, themeColor) {
       state.profile.themeColor = themeColor;
+      setStorage(state.profile);
     },
     /**
      * プロフィールを State に保存します。
@@ -42,12 +67,15 @@ export const profileModule = {
      */
     saveProfile(state, profile) {
       state.profile = profile;
+      setStorage(profile);
     },
     /**
      * State からプロフィールをクリアします。
      */
     clearProfile(state) {
       state.profile = null;
+      // sessionStorageのキーが'profile'のものを削除する。
+      sessionStorage.removeItem('profile');
     },
   },
   actions: {
