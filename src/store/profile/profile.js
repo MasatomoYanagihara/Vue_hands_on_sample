@@ -88,7 +88,7 @@ export const profileModule = {
 
       // eslint-disable-next-line no-useless-catch
       try {
-        await axios.patch('profile', data);
+        await axios.patch('profile', data, { retryable: true });
         commit('updateUserName', userName);
         update(state.profile);
       } catch (error) {

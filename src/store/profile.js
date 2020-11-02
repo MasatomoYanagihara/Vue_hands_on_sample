@@ -10,7 +10,7 @@ export const profileStore = reactive({ profile: null });
  * ユーザー名を更新します。
  * @param userName ユーザー名
  */
-export const updateUserNameAsync = async userName => {
+export const updateUserName = async userName => {
   const profile = profileStore.profile;
   const data = { userName: userName };
 
@@ -45,41 +45,41 @@ export const updateThemeColor = themeColor => {
 // /**
 //  * サインインします。
 //  */
-// export const signInAsync = async () => {
-//   // ここに外部認証に関連した実装が必要
-
-//   // eslint-disable-next-line no-useless-catch
-//   try {
-//     const response = await axios.get('profile');
-//     profileStore.profile = response.data;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
-
-/**
- * サインインします。（Fetch APIバージョン）
- */
 export const signInAsync = async () => {
   // ここに外部認証に関連した実装が必要
 
-  const options = {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json;charset=UTF-8',
-    },
-  };
-
   // eslint-disable-next-line no-useless-catch
   try {
-    const response = await fetch('/api/profile', options);
-    if (response.ok) {
-      profileStore.profile = await response.json();
-      return;
-    }
-    throw new Error('response was not ok.');
+    const response = await axios.get('profile');
+    profileStore.profile = response.data;
   } catch (error) {
     throw error;
   }
 };
+
+/**
+ * サインインします。（Fetch APIバージョン）
+ */
+// export const signInAsync = async () => {
+//   // ここに外部認証に関連した実装が必要
+
+//   const options = {
+//     method: 'GET',
+//     headers: {
+//       Accept: 'application/json',
+//       'Content-Type': 'application/json;charset=UTF-8',
+//     },
+//   };
+
+//   // eslint-disable-next-line no-useless-catch
+//   try {
+//     const response = await fetch('/api/profile', options);
+//     if (response.ok) {
+//       profileStore.profile = await response.json();
+//       return;
+//     }
+//     throw new Error('response was not ok.');
+//   } catch (error) {
+//     throw error;
+//   }
+// };

@@ -6,7 +6,7 @@ import ProfileComponent from '@/views/Profile.vue';
 import ShareComponent from '@/views/Share.vue';
 import SignInComponent from '@/views/SignIn.vue';
 import NotFoundComponent from '@/views/NotFound.vue';
-import store from '@/store/index';
+// import store from '@/store/index';
 
 Vue.use(VueRouter);
 
@@ -84,21 +84,21 @@ router.afterEach(to => {
 // to: ナビゲーション先のルートオブジェクト
 // from: ナビゲーション元のルートオブジェクト
 // next: ナビゲーションを行う関数
-router.beforeEach((to, from, next) => {
-  // 次のパスが'/sign-in'なら遷移させる
-  if (to.path === '/sign-in') {
-    next();
-    return;
-  }
+// router.beforeEach((to, from, next) => {
+//   // 次のパスが'/sign-in'なら遷移さ
+//   if (to.path === '/sign-in') {
+//     next();
+//     return;
+//   }
 
-  // profile情報を保持していたら遷移させる
-  if (store.getters['profile/profile']) {
-    next();
-    return;
-  }
+//   // profile情報を保持していたら遷移させる
+//   if (store.getters['profile/profile']) {
+//     next();
+//     return;
+//   }
 
-  // それ以外はサインイン画面に遷移させる
-  next('/sign-in');
-});
+//   // それ以外はサインイン画面に遷移させる
+//   next('/sign-in');
+// });
 
 export default router;
