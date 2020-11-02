@@ -1,7 +1,12 @@
 <template>
   <v-row align="center" justify="center">
     <v-col cols="12" md="6" class="text-center">
-      <My-example v-model="parentValue" @custom-event="customEventHandler" />
+      <My-example
+        v-model="parentValue"
+        counter="10"
+        clearable
+        @custom-event="customEventHandler"
+      />
       <!-- v-modelは以下のように書き換えることができる -->
       <!-- <my-example :value="parentValue" @input="parentValue = $event" /> -->
       <p class="display-1 py-12">
