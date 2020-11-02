@@ -12,8 +12,10 @@ import {
   toRefs,
   computed,
 } from '@vue/composition-api';
+import MixinExample from '@/mixins/mixin-example';
 
 export default defineComponent({
+  mixins: [MixinExample],
   inheritAttrs: false,
   props: {
     value: {
